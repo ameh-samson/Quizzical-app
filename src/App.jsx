@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Intro from "./components/Intro";
 import Question from "./components/Questions";
 
@@ -6,21 +6,29 @@ export default function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [questions, setQuestions] = useState([]);
 
+  useEffect(() => {
+    if (gameStarted) {
+      fetch(
+        "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple"
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setQuestions(data.results);
+          setGameStarted(true);
+        })
+        .catch((error) => {
+          console.error("Error fetching questions:", error);
+        });
+    }
+  }, [gameStarted]);
+
   // start game
   function startGame() {
-    fetch("https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple")
-      .then((res) => res.json())
-      .then((data) => {
-        setQuestions(data.results);
-        setGameStarted(true);
-      })
-      .catch((error) => {
-        console.error("Error fetching questions:", error);
-      });
+    setGameStarted(true);
   }
 
-  const questionEl = questions.map((question) => {
-    return <Question questions={question} />;
+  const questionEl = questions.map((question, index) => {
+    return <Question questions={question} key={index} />;
   });
 
   return (
@@ -56,7 +64,7 @@ export default function App() {
         />
       </svg>
 
-      {gameStarted ? [questionEl] : <Intro startGame={startGame} />}
+      {gameStarted ? questionEl : <Intro startGame={startGame} />}
     </main>
   );
 }
