@@ -20,7 +20,7 @@ export default function App() {
           console.error("Error fetching questions:", error);
         });
     }
-  }, []);
+  }, [gameStarted]);
 
   // start game
   function startGame() {
