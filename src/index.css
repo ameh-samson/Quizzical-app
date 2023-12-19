@@ -123,3 +123,8 @@ button {
   border: 1px solid #4d5b9e;
   cursor: pointer;
 }
+
+.question-options li:hover {
+  background: #293264;
+  color: #f5f7fb;
+}
