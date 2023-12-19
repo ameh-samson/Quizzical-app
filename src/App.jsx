@@ -4,10 +4,24 @@ import Question from "./components/Questions";
 
 export default function App() {
   const [gameStarted, setGameStarted] = useState(false);
+  const [questions, setQuestions] = useState([]);
 
+  // start game
   function startGame() {
-    setGameStarted(true);
+    fetch("https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple")
+      .then((res) => res.json())
+      .then((data) => {
+        setQuestions(data.results);
+        setGameStarted(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching questions:", error);
+      });
   }
+
+  const questionEl = questions.map((question) => {
+    return <Question questions={question} />;
+  });
 
   return (
     <main className="main">
@@ -42,7 +56,7 @@ export default function App() {
         />
       </svg>
 
-      {gameStarted ? <Question /> : <Intro startGame={startGame} />}
+      {gameStarted ? [questionEl] : <Intro startGame={startGame} />}
     </main>
   );
 }

@@ -1,15 +1,8 @@
-export default function Question() {
+export default function Question(props) {
+  console.log(props.questions);
   return (
     <div className="questions-section">
-      <h2 className="question-title">How would one say goodbye in Spanish?</h2>
-      <ul className="question-options">
-        <li>Adiós</li>
-        <li>Adiós</li>
-        <li>Adiós</li>
-        <li>Adiós</li>
-      </ul>
-
-      <h2 className="question-title">How would one say goodbye in Spanish?</h2>
+      <h2 className="question-title">{props.questions.question}</h2>
       <ul className="question-options">
         <li>Adiós</li>
         <li>Adiós</li>
